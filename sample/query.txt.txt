@@ -1,4 +1,5 @@
-USE [RmcplT]
+
+USE [Rmcpl]
 GO
 
 /****** Object:  Table [dbo].[SampleReqiziationStock]    Script Date: 12-09-2024 10:44:44 ******/
@@ -33,3 +34,68 @@ ALTER TABLE [dbo].[SampleReqiziationStock] ADD  DEFAULT (getdate()) FOR [Inserte
 GO
 
 
+
+USE [Rmcpl]
+GO
+/****** Object:  StoredProcedure [dbo].[InsertSampleReqiziationStock]    Script Date: 12-09-2024 10:26:43 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[InsertSampleReqiziationStock]
+    @SampleReqizitionID INT = NULL,
+    @SR_Ref_ID VARCHAR(50),
+    @IsSampleAvailableInPlant VARCHAR(3) = NULL,
+	@Available_In VARCHAR(30) = NUll,
+    @IsAvailableInStores VARCHAR(50) = NULL,
+    @TotalQuantity INT = NULL,
+    @BatchNo VARCHAR(50) = NULL,
+    @RemarkIfYes VARCHAR(255) = NULL,
+    @RequestForwardedToRnD BIT = NULL,
+    @ConcernedPersonName VARCHAR(100) = NULL,
+    @RemarkIfNo VARCHAR(255) = NULL
+AS
+BEGIN
+    INSERT INTO SampleReqiziationStock
+        (SampleReqizitionID, SR_Ref_ID, IsSampleAvailableInPlant,Available_In, IsAvailableInStores, TotalQuantity, BatchNo,
+         RemarkIfYes, RequestForwardedToRnD, ConcernedPersonName, RemarkIfNo, InsertedDate)
+    VALUES
+        (@SampleReqizitionID, @SR_Ref_ID, @IsSampleAvailableInPlant,@Available_In, @IsAvailableInStores, @TotalQuantity, @BatchNo,
+         @RemarkIfYes, @RequestForwardedToRnD, @ConcernedPersonName, @RemarkIfNo, GETDATE());
+END
+
+
+USE [Rmcpl]
+GO
+/****** Object:  StoredProcedure [dbo].[UpdateSampleReqiziationStock]    Script Date: 12-09-2024 10:43:55 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER PROCEDURE [dbo].[UpdateSampleReqiziationStock]  
+    @SampleReqiziationStockID INT,  
+    @SampleReqizitionID INT,  
+    @SR_Ref_ID VARCHAR(50),  
+    @IsAvailableInStores VARCHAR(50) = NULL,  
+    @IsSampleAvailableInPlant VARCHAR(50) = NULL ,
+	@TotalQuantity INT = NULL,
+    @BatchNo VARCHAR(50) = NULL,
+    @RemarkIfYes VARCHAR(255) = NULL,
+    @RequestForwardedToRnD varchar(20) = NULL,
+    @ConcernedPersonName VARCHAR(100) = NULL,
+    @RemarkIfNo VARCHAR(255) = NULL
+AS  
+BEGIN  
+    UPDATE SampleReqiziationStock  
+    SET  
+        TotalQuantity= @TotalQuantity,
+        IsSampleAvailableInPlant = @IsSampleAvailableInPlant,
+		BatchNo = @BatchNo,
+		RemarkIfYes = @RemarkIfYes,
+		RequestForwardedToRnD = @RequestForwardedToRnD,
+		ConcernedPersonName= @ConcernedPersonName,
+		RemarkIfNo = @RemarkIfNo
+
+    WHERE  
+        SampleReqizitionID = @SampleReqizitionID  
+END  
